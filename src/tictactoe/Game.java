@@ -54,11 +54,6 @@ public class Game {
         currentTurn = currentTurn == player1 ? player2 : player1;
     }
 
-    public void markGameAsFinishedWithWinner(Player player){
-        setIsFinished();
-        winner = player;
-    }
-
     public boolean isFinished() {
         return finished;
     }
