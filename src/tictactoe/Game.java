@@ -25,25 +25,30 @@ public class Game {
             throw new IllegalArgumentException("Game is finished");
         }
 
-        if (row <= 0 || row > board.getBoard().length) {
+        if (!board.isValidRowAndColumn(row, column)) {
             throw new IllegalArgumentException("Invalid position to make move");
         }
 
-        // handle indexes ie if they choose row 3 it would need to set in row 2 of array
-        row--;
-        column--;
-
-        //check someone hasn't moved there already
-        if (board.getBoard()[row][column] != '.') {
+        if (board.isPositionAlreadyOccupied(row, column)) {
             throw new IllegalArgumentException("Position already set");
         }
 
 
-        char identifier = currentTurn.getIdentifier();
-        board.getBoard()[row][column] = identifier;
+        board.updateBoard(currentTurn, row, column);
 
-        if (checkForWinningByRow(currentTurn) || checkForColumnWin(currentTurn) || checkForDiagonalWin(currentTurn)) {
-            winner();
+        if(board.checkForWinningByRow(currentTurn)){
+            GameView.outputWinner(currentTurn, "Row");
+            markGameAsFinished(currentTurn);
+        }
+
+        if(board.checkForColumnWin(currentTurn)){
+            GameView.outputWinner(currentTurn, "Column");
+            markGameAsFinished(currentTurn);
+        }
+
+        if(board.checkForDiagonalWin(currentTurn)){
+            GameView.outputWinner(currentTurn, "Diagonal");
+            markGameAsFinished(currentTurn);
         }
 
         currentTurn = currentTurn == player1 ? player2 : player1;
@@ -54,54 +59,9 @@ public class Game {
         }
     }
 
-    private boolean checkForWinningByRow(Player player) {
-        char identifier = player.getIdentifier();
-        int count = 0;
-
-        for (int i = 0; i < board.getBoard().length; i++) {
-            for (int j = 0; j < board.getBoard()[i].length; j++) {
-                if (board.getBoard()[i][j] == identifier) {
-                    count++;
-                }
-            }
-
-            if (count == 3) return true;
-            count = 0;
-        }
-
-        return false;
-    }
-
-    private boolean checkForColumnWin(Player player) {
-        char identifier = player.getIdentifier();
-        int count = 0;
-
-        for (int i = 0; i < board.getBoard().length; i++) {
-            for (int j = 0; j < board.getBoard()[i].length; j++) {
-                if (board.getBoard()[j][i] == identifier) {
-                    count++;
-                }
-            }
-            if (count == 3) return true;
-            count = 0;
-        }
-
-        return false;
-    }
-
-    private boolean checkForDiagonalWin(Player player) {
-        char identifier = player.getIdentifier();
-        return (board.getBoard()[0][0] == identifier && board.getBoard()[1][1] == identifier && board.getBoard()[2][2] == identifier) ||
-                (board.getBoard()[0][2] == identifier && board.getBoard()[1][1] == identifier && board.getBoard()[2][0] == identifier);
-
-    }
-
-    private void winner() {
-        System.out.println(currentTurn.getIdentifier() + " wins!");
-        System.out.println("Winning tictactoe.Board:");
-        board.displayBoard();
-        finished = true;
-        winner = currentTurn;
+    public void markGameAsFinished(Player player){
+        setIsFinished(true);
+        winner = player;
     }
 
     public boolean isFinished() {

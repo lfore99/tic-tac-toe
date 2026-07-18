@@ -7,7 +7,7 @@ public class PlayerTest {
 
     @Test
     public void given_identifier_ensure_identifier_is_set_correctly(){
-        Player p = new Player('O');
+        Player p = new Player('O', "PlayerOne");
 
         Assert.assertEquals('O', p.getIdentifier());
     }
