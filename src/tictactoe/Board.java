@@ -76,7 +76,7 @@ public class Board {
         return grid[row - 1][column - 1] != '.';
     }
 
-    public void updateBoard(Player player, int row, int column) {
+    public void addToBoard(Player player, int row, int column) {
         grid[row - 1][column - 1] = player.getIdentifier();
     }
 

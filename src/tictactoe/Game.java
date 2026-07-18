@@ -33,7 +33,7 @@ public class Game {
             throw new IllegalArgumentException("Position already set");
         }
 
-        board.updateBoard(currentTurn, row, column);
+        board.addToBoard(currentTurn, row, column);
         moveCounter++;
 
         if(board.hasPlayerWon(currentTurn.getIdentifier())){
