@@ -2,20 +2,26 @@ package tictactoe;
 
 public class Board {
     private final char[][] grid;
-    private static int ROWS = 3;
-    private static int COLUMNS = 3;
+    private final static int ROWS = 3;
+    private final static int COLUMNS = 3;
 
-    public Board(){
+    public Board() {
         this.grid = new char[ROWS][COLUMNS];
-        for(int i = 0; i < ROWS; i++){
-            for(int j = 0; j < COLUMNS; j++){
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLUMNS; j++) {
                 grid[i][j] = '.';
             }
         }
     }
 
-    public boolean checkForWinningByRow(Player player) {
-        char identifier = player.getIdentifier();
+    public boolean hasPlayerWon(char identifier) {
+        return
+                checkForWinningByRow(identifier) ||
+                checkForColumnWin(identifier) ||
+                checkForDiagonalWin(identifier);
+    }
+
+    private boolean checkForWinningByRow(char identifier) {
         int count = 0;
 
         for (char[] chars : grid) {
@@ -32,8 +38,7 @@ public class Board {
         return false;
     }
 
-    public boolean checkForColumnWin(Player player) {
-        char identifier = player.getIdentifier();
+    private boolean checkForColumnWin(char identifier) {
         int count = 0;
 
         for (int i = 0; i < grid.length; i++) {
@@ -49,30 +54,29 @@ public class Board {
         return false;
     }
 
-    public boolean checkForDiagonalWin(Player player) {
-        char identifier = player.getIdentifier();
+    private boolean checkForDiagonalWin(char identifier) {
         return (grid[0][0] == identifier && grid[1][1] == identifier && grid[2][2] == identifier) ||
                 (grid[0][2] == identifier && grid[1][1] == identifier && grid[2][0] == identifier);
 
     }
 
-    public boolean isValidRowAndColumn(int row, int column){
-        if(row <= 0 || row > grid[0].length){
+    public boolean isValidRowAndColumn(int row, int column) {
+        if (row <= 0 || row > grid[0].length) {
             return false;
         }
 
-        if(column <= 0 || column > grid.length) {
+        if (column <= 0 || column > grid.length) {
             return false;
         }
 
         return true;
     }
 
-    public boolean isPositionAlreadyOccupied(int row, int column){
+    public boolean isPositionAlreadyOccupied(int row, int column) {
         return grid[row - 1][column - 1] != '.';
     }
 
-    public void updateBoard(Player player, int row, int column){
+    public void updateBoard(Player player, int row, int column) {
         grid[row - 1][column - 1] = player.getIdentifier();
     }
 

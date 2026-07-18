@@ -33,33 +33,28 @@ public class Game {
             throw new IllegalArgumentException("Position already set");
         }
 
-
         board.updateBoard(currentTurn, row, column);
-
-        if(board.checkForWinningByRow(currentTurn)){
-            GameView.outputWinner(currentTurn, "Row");
-            markGameAsFinished(currentTurn);
-        }
-
-        if(board.checkForColumnWin(currentTurn)){
-            GameView.outputWinner(currentTurn, "Column");
-            markGameAsFinished(currentTurn);
-        }
-
-        if(board.checkForDiagonalWin(currentTurn)){
-            GameView.outputWinner(currentTurn, "Diagonal");
-            markGameAsFinished(currentTurn);
-        }
-
-        currentTurn = currentTurn == player1 ? player2 : player1;
         moveCounter++;
+
+        if(board.hasPlayerWon(currentTurn.getIdentifier())){
+            GameView.outputWinner(currentTurn);
+            setIsFinished();
+            setWinner(currentTurn);
+            return;
+        }
 
         if(moveCounter == TOTAL_MOVES){
             setIsFinished();
         }
+
+        switchPlayer();
     }
 
-    public void markGameAsFinished(Player player){
+    private void switchPlayer(){
+        currentTurn = currentTurn == player1 ? player2 : player1;
+    }
+
+    public void markGameAsFinishedWithWinner(Player player){
         setIsFinished();
         winner = player;
     }
@@ -78,5 +73,9 @@ public class Game {
 
     public Board getBoard() {
         return board;
+    }
+
+    public void setWinner(Player winner) {
+        this.winner = winner;
     }
 }
