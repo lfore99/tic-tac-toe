@@ -20,20 +20,15 @@ public class Game {
         this.moveCounter = 0;
     }
 
-    public void makeMove(int row, int column) {
+    public void makeMove() {
         if (isFinished()) {
             throw new IllegalArgumentException("Game is finished");
         }
 
-        if (!board.isValidRowAndColumn(row, column)) {
-            throw new IllegalArgumentException("Invalid position to make move");
-        }
+        Move move = currentTurn.chooseMove();
 
-        if (board.isPositionAlreadyOccupied(row, column)) {
-            throw new IllegalArgumentException("Position already set");
-        }
 
-        board.addToBoard(currentTurn, row, column);
+        board.addToBoard(currentTurn, move);
         moveCounter++;
 
         if(board.hasPlayerWon(currentTurn.getIdentifier())){

@@ -17,8 +17,8 @@ public class Board {
     public boolean hasPlayerWon(char identifier) {
         return
                 checkForWinningByRow(identifier) ||
-                checkForColumnWin(identifier) ||
-                checkForDiagonalWin(identifier);
+                        checkForColumnWin(identifier) ||
+                        checkForDiagonalWin(identifier);
     }
 
     private boolean checkForWinningByRow(char identifier) {
@@ -60,40 +60,36 @@ public class Board {
 
     }
 
-    public boolean isValidRowAndColumn(int row, int column) {
-        if (row <= 0 || row > grid[0].length) {
+    public void addToBoard(Player humanPlayer, Move move) {
+        if (!isValidRowAndColumn(move)) {
+            throw new IllegalArgumentException("Invalid position to make move");
+        }
+
+        if (!isPositionAlreadyOccupied(move)) {
+            throw new IllegalArgumentException("Position already set");
+        }
+
+        grid[move.getRow() - 1][move.getColumn() - 1] = humanPlayer.getIdentifier();
+    }
+
+    public boolean isValidRowAndColumn(Move move) {
+        if (move.getRow() <= 0 || move.getRow() > grid[0].length) {
             return false;
         }
 
-        if (column <= 0 || column > grid.length) {
+        if (move.getColumn() <= 0 || move.getColumn() > grid.length) {
             return false;
         }
 
         return true;
     }
 
-    public boolean isPositionAlreadyOccupied(int row, int column) {
-        return grid[row - 1][column - 1] != '.';
-    }
-
-    public void addToBoard(Player player, int row, int column) {
-        grid[row - 1][column - 1] = player.getIdentifier();
+    public boolean isPositionAlreadyOccupied(Move move) {
+        return grid[move.getRow() - 1][move.getColumn() - 1] != '.';
     }
 
 
     public char[][] getGrid() {
         return grid;
-    }
-
-    public void displayBoard() {
-        System.out.println();
-        for (char[] chars : grid) {
-            for (char aChar : chars) {
-                System.out.print("|");
-                System.out.print(aChar);
-            }
-            System.out.print("|");
-            System.out.println();
-        }
     }
 }
