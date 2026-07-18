@@ -8,16 +8,16 @@ public class Game {
     private Player winner;
     private boolean finished;
     private int moveCounter;
-    private final int totalMoves;
+    private static final int TOTAL_MOVES = 9;
 
-    public Game(Board board, Player player1, Player player2) {
-        this.board = board;
+
+    public Game(Player player1, Player player2) {
+        this.board = new Board();
         this.player1 = player1;
         this.player2 = player2;
         this.currentTurn = player1;
         this.finished = false;
         this.moveCounter = 0;
-        this.totalMoves = 9;
     }
 
     public void makeMove(int row, int column) {
@@ -54,13 +54,13 @@ public class Game {
         currentTurn = currentTurn == player1 ? player2 : player1;
         moveCounter++;
 
-        if(moveCounter == totalMoves){
-            setIsFinished(true);
+        if(moveCounter == TOTAL_MOVES){
+            setIsFinished();
         }
     }
 
     public void markGameAsFinished(Player player){
-        setIsFinished(true);
+        setIsFinished();
         winner = player;
     }
 
@@ -68,11 +68,15 @@ public class Game {
         return finished;
     }
 
-    private void setIsFinished(boolean finished){
-        this.finished = finished;
+    private void setIsFinished(){
+        this.finished = true;
     }
 
     public Player getWinner() {
         return winner;
+    }
+
+    public Board getBoard() {
+        return board;
     }
 }
